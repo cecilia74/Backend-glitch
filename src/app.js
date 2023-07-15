@@ -43,7 +43,7 @@ app.use("/realtimeproducts", realtime)
 app.use("/chat", chatRouter)
 
 app.get("*", (req, res) => {
-    res.send("Welcome to my humble page.")
+    res.send(console.log(`Welcome to my humble page.`))
 })
 
 

@@ -1,12 +1,12 @@
 <div id="dynamic-list" class="row">
     {{#each products}}
     <div class="col-md-3">
-        <div class="card grid">
+        <div class="card">
             <img class="card-img-top" src={{thumbnails}} alt="" />
             <div class="card-body">
                 <h2 class="card-title">{{title}}</h2>
                 <p class="card-text">{{description}}</p>
-                <p class="card-text">ID: {{id}}</p>
+                <p class="card-text">ID: {{_id}}</p>
                 <p class="card-text">Code: {{code}}</p>
                 <p class="card-text">Stock: {{stock}}</p>
                 <p class="card-text">Price: ${{price}}</p>
@@ -26,7 +26,7 @@
             <div class="card-body">
                 <h2 class="card-title">{{title}}</h2>
                 <p class="card-text">{{description}}</p>
-                <p class="card-text">ID: {{id}}</p>
+                <p class="card-text">ID: {{_id}}</p>
                 <p class="card-text">Code: {{code}}</p>
                 <p class="card-text">Stock: {{stock}}</p>
                 <p class="card-text">Price: ${{price}}</p>
@@ -46,7 +46,7 @@
             <div class="card-body">
                 <h2 class="card-title">{{title}}</h2>
                 <p class="card-text">{{description}}</p>
-                <p class="card-text">ID: {{id}}</p>
+                <p class="card-text">ID: {{_id}}</p>
                 <p class="card-text">Code: {{code}}</p>
                 <p class="card-text">Stock: {{stock}}</p>
                 <p class="card-text">Price: ${{price}}</p>

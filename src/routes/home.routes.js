@@ -1,5 +1,6 @@
 import express  from "express";
 import ProductManager from "../DAO/functions/ProductManager.js";
+import { ProductServise } from "../services/products.service.js";
 
 export const home = express.Router();
 
@@ -9,7 +10,7 @@ home.get("/", async (req, res) => {
 
     try {
         const { limit } = req.query;
-        const products = await manager.getProducts();
+        const products = await ProductServise.getAllAlone();
         if (limit) {
             const limitprod = products.slice(0, parseInt(limit))
             res.status(200).render("home",{limitprod});

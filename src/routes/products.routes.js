@@ -1,30 +1,50 @@
 
 import express from 'express';
-import ProductManager from '../DAO/functions/ProductManager.js';
 import { ProductServise } from '../services/products.service.js';
 export const productsRouter = express.Router();
-
-const newProductManager = new ProductManager('../data/Products.json');
 
 
 productsRouter.get("/", async (req, res) => {
 
     try {
-        const products = await ProductServise.getAll();
-        if (products) {
-            res.status(200).send({
-                status: "SUCCESS",
-                msg: "Found all products",
-                data: products,
-            });
-        }
-    }
-    catch (err) {
-        res.status(500).send({
-            status: "ERROR",
-            msg: err.message,
-            data: {},
-        })
+        const queryParams = req.query;
+        // const queryParams = {limit, page, sort, query};
+        const {
+            payload: products,
+            totalPages,
+            prevPage,
+            nextPage,
+            page: currentPage,
+            hasPrevPage,
+            hasNextPage,
+            prevLink,
+            nextLink,
+        } = await ProductServise.getAllWithPagination(queryParams);
+        let productsSimplified = products.map((item) => {
+            return {
+                _id: item._id.toString(),
+                title: item.title,
+                description: item.description,
+                price: item.price,
+                thumbnail: item.thumbnail,
+                code: item.code,
+                stock: item.stock,
+                category: item.category,
+            };
+        });
+        return res.render('products', {
+            products: productsSimplified,
+            totalPages,
+            prevPage,
+            nextPage,
+            currentPage,
+            hasPrevPage,
+            hasNextPage,
+            prevLink,
+            nextLink,
+        });
+    } catch (error) {
+        return res.status(500).json({status: 'error', message: 'Error in server'});
     }
 
 })
@@ -33,14 +53,15 @@ productsRouter.get("/", async (req, res) => {
 productsRouter.get("/:pid", async (req, res) => {
 
     try {
-        let idid = req.params.pid;
-        let idEncontrado = await ProductServise.getOne(idid);
+        let { pid } = req.params;
+        let idEncontrado = await ProductServise.getOne(pid);
         if (idEncontrado) {
-            res.status(200).send({
-                status: "SUCCESS",
-                msg: "Product found.",
-                data: idEncontrado,
-            });
+            res.status(200).render("products",{idEncontrado})
+            // send({
+            //     status: "SUCCESS",
+            //     msg: "Product found.",
+            //     data: idEncontrado,
+            // });
         }
         else {
             res.status(400).json({
@@ -61,22 +82,18 @@ productsRouter.get("/:pid", async (req, res) => {
 
 productsRouter.post("/", async (req, res) => {
     try {
-
-        // const prodtitle = req.body.title;
-        // const proddes = req.body.description;
-        // const prodprice = req.body.price;
-        // const prodthum = req.body.thumbnail;
-        // const prodcode = req.body.code;
-        // const prods = req.body.stock;
-        // const prodcat = req.body.category;
-        // const prodstat = req.body.status;
-
-        // const all = {prodtitle,proddes,prodprice,prodthum,prodcode,prods,prodcat,prodstat};
-        const body = req.body
-        const newprod = ProductServise.createOne(body);
+        const { title, description, price, thumbnail, code, stock } = req.body;
+        if (!title || !description || !price || !thumbnail || !code || !stock) {
+            console.log("Please complete all forms");
+            return res.status(400).json({
+                status: "error",
+                msg: "Please complete all forms",
+                payload: {},
+            });
+        }
+        const newprod = await ProductServise.createOne({ title, description, price, thumbnail, code, stock });
         console.log(newprod);
         if (newprod) {
-
             res.status(200).send({
                 status: "SUCCESS",
                 msg: "Product added.",
@@ -99,21 +116,11 @@ productsRouter.post("/", async (req, res) => {
 });
 
 
-productsRouter.put("/:pid", (req, res) => {
+productsRouter.put("/:pid", async (req, res) => {
     try {
-        // const di = req.params.pid;
-        // const newtitle = req.body.title;
-        // const newdes = req.body.description;
-        // const newprice = req.body.price;
-        // const prodthum = req.body.thumbnail;
-        // const newcode = req.body.code;
-        // const news = req.body.stock;
-        // const newcat = req.body.category;
-        // const newstat = req.body.status;
-        // const newall = { newtitle,newdes,newprice,prodthum,newcode,news,newcat,newstat}
-        const {pid} = req.params;
+        const { pid } = req.params;
         const body = req.body;
-        let putid = ProductServise.updateOne(pid,body);
+        let putid = await ProductServise.updateOne(pid, body);
         if (putid) {
             return res
                 .status(200)
@@ -133,12 +140,11 @@ productsRouter.put("/:pid", (req, res) => {
 });
 
 
-productsRouter.delete("/:pid", (req, res) => {
+productsRouter.delete("/:pid", async (req, res) => {
 
     try {
-        let id = req.params.pid;
-        let deleid = ProductServise.deleteOne(id);
-
+        let { pid } = req.params;
+        let deleid = await ProductServise.deleteOne(pid);
         if (deleid) {
             return res
                 .status(200)

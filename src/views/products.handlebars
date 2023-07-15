@@ -1,0 +1,108 @@
+{{!-- <script>const getId = localStorage.getItem("carrito-id");
+    if (!getId) {
+        alert("no hay");
+    } else {
+        alert(getId)
+    }
+</script> --}}
+<h1>Products</h1>
+
+<div id="dynamic-list" class="row">
+    {{#each products}}
+    <div class="col-md-3">
+        <div class="card">
+                <h2 class="card-title">{{this.title}}</h2>
+            <div class="card-body">
+            <img class="card-img-top" src={{this.thumbnails}} alt="" />
+                <p class="card-text">{{this.description}}</p>
+                <p class="card-text">ID: {{this._id}}</p>
+                <p class="card-text">Code: {{this.code}}</p>
+                <p class="card-text">Stock: {{this.stock}}</p>
+                <p class="card-text">Price: ${{this.price}}</p>
+                <p class="card-text">Category: {{this.category}}</p>
+                <p class="card-text">Status: {{this.status}}</p>
+            </div>
+        </div><button onclick="postToCart('{{this._id}}')">add to cart</button>
+    </div>
+</div>
+{{/each}}
+</div>
+
+<div id="dynamic-list" class="row">
+    {{#each limitedProducts}}
+    <div class="col-md-3">
+        <div class="card">
+            <img class="card-img" src={{this.thumbnails}} alt="" />
+            <div class="card-body">
+                <h2 class="card-title">{{this.title}}</h2>
+                <p class="card-text">{{this.description}}</p>
+                <p class="card-text">ID: {{this._id}}</p>
+                <p class="card-text">Code: {{this.code}}</p>
+                <p class="card-text">Stock: {{this.stock}}</p>
+                <p class="card-text">Price: ${{this.price}}</p>
+                <p class="card-text">Category: {{this.category}}</p>
+                <p class="card-text">Status: {{this.status}}</p>
+            </div>
+        </div><button class='btn btn-success mb-3 addToCart' id='addToCart' data-productid='{{_id}}' onclick="postToCart('{{this._id}}')">add to cart</button>
+    </div>
+    {{/each}}
+</div>
+
+<div id="dynamic-list" class="row">
+    {{#each productById}}
+    <div class="col-md-3">
+        <div class="card">
+            <img class="card-img" src={{this.thumbnails}} alt="" />
+            <div class="card-body">
+                <h2 class="card-title">{{this.title}}</h2>
+                <p class="card-text">{{this.description}}</p>
+                <p class="card-text">ID: {{this._id}}</p>
+                <p class="card-text">Code: {{this.code}}</p>
+                <p class="card-text">Stock: {{this.stock}}</p>
+                <p class="card-text">Price: ${{this.price}}</p>
+                <p class="card-text">Category: {{this.category}}</p>
+                <p class="card-text">Status: {{this.status}}</p>
+            </div>
+        </div><button class='btn btn-success mb-3 addToCart' id='addToCart' data-productid='{{_id}}' onclick="postToCart('{{this._id}}')">add to cart</button> 
+    </div>
+    {{/each}}
+</div>
+
+
+<div class="d-flex justify-content-center">
+totalPages:
+{{totalPages}}
+prevPage:
+{{prevPage}}
+nextPage:
+{{nextPage}}
+currentPage:
+{{currentPage}}
+hasPrevPage:
+{{hasPrevPage}}
+hasNextPage:
+{{hasNextPage}}
+prevLink:
+{{prevLink}}
+nextLink:
+{{nextLink}}
+
+<div class="pagination">
+    {{#if prevLink}}
+        <a href="{{prevLink}}">Previous</a>
+    {{/if}}
+
+    {{#if nextLink}}
+        <a href="{{nextLink}}">Next</a>
+    {{/if}}
+</div>
+</div>
+
+
+</div>
+
+
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/test-socket.js"></script>
+<script src="/js/carts.js"></script>
