@@ -1,20 +1,22 @@
 import { Schema, model } from "mongoose";
 
 const schema = new Schema({
-    products: {
-        type: [
+        products: {
+          type: [
             {
-                product: {
-                    type: Schema.Types.ObjectId,
-                    ref: "products",
-                    required: true,
-                },
-                quantity: { type: Number, default: 1 },
+              product: {
+                type: Schema.Types.ObjectId,
+                ref: 'products',
+                required: true,
+              },
+              quantity: { type: Number, default: 1 },
             },
-        ],
-        default: [],
-    },
-});
+          ],
+          default: [],
+        },
+      }).pre('findOne', function () {
+        this.populate('products.product');
+      })
 
 export const CartsModel = model("carts", schema);
 

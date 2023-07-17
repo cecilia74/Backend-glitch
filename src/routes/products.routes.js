@@ -2,7 +2,7 @@
 import express from 'express';
 import { ProductServise } from '../services/products.service.js';
 export const productsRouter = express.Router();
-
+import { CartServise } from '../services/carts.service.js';
 
 productsRouter.get("/", async (req, res) => {
 
@@ -163,6 +163,21 @@ productsRouter.delete("/:pid", async (req, res) => {
     }
 });
 
-
+productsRouter.get('/carts/:cid', async (req, res, next) => {
+    try {
+        const {cid} = req.params;
+        const cart = await CartServise.getOne(cid);
+        const simplifiedCart = cart.products.map((item) => {
+            return {
+                title: item.product.title,
+                price: item.product.price,
+                quantity: item.quantity,
+            };
+        });
+        res.render('cart', {cart: simplifiedCart});
+    } catch (error) {
+        next(error);
+    }
+});
 
 

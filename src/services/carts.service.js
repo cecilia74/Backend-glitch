@@ -10,12 +10,16 @@ class cartServise {
 
 
     async getOne(cid) {
-        const get = CartsModel.getCartById(cid).populate("products.product");
-        if (!cart) {
-            throw new Error("cart not found.");
+        try {
+            const getCart = await CartsModel.findById(cid).populate('products.product');
+        if (!getCart) {
+            throw new Error("Cart not found.");
         }
-        return get;
+        return getCart;
+    } catch (err) {
+        throw new Error("Cannnot get cart");
     }
+}
 
     async createCart() {
         const newCart = await CartsModel.create({});
@@ -64,18 +68,33 @@ class cartServise {
 
 
     async addToCart(cartId, productId) {
+        console.log(productId);
         try {
-            const findCart = await CartsModel.findById(cartId);
-            const product = await ProductsModel.findById(productId);
-            if (!findCart) {
-                throw new Error("Cart not found");
+            const cart = await CartsModel.findById(cartId).exec();
+            const product = await ProductsModel.findById(productId).exec();
+            if (!cart) {
+                throw new Error('Cart not found');
             }
             if (!product) {
-                throw new Error("Product not found");
+                throw new Error('Product not found');
             }
-            findCart.products.push({ product: product._id, quantity: 1 });
-            await findCart.save();
-            return findCart;
+
+            const productIndex = cart.products.findIndex(p => {
+                const product = p.product.toObject();
+                const productString = product._id.toString();
+                return productString === productId;
+            });
+            if (productIndex === -1) {
+                cart.products.push({ product: product._id, quantity: 1 });
+                await cart.save();
+            } else {
+                cart.products[productIndex].quantity += 1;
+                await cart.save();
+            }
+
+            console.log(productIndex);
+
+            return cart;
         } catch (error) {
             throw new Error("Error add new product to cart");
         }

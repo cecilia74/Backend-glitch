@@ -7,7 +7,7 @@ export async function connectMongo() {
     try {
         await connect(
             "mongodb+srv://ceciliaponce28:mHey2UVhS8P29Yhr@proyectos-backend.qr0fbhz.mongodb.net/?retryWrites=true&w=majority",
-            { dbName: 'e-commerce' }
+            // { dbName: 'e-commerce' }
         );
 
         // GENERATE FALSE USERS FOR TRIAL

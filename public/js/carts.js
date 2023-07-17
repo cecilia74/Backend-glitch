@@ -1,11 +1,10 @@
 
-let cartId = localStorage.getItem("e-id");
-const PORT = 8080;
-
-const API_URL = `http://localhost:${PORT}/api`;
 function postToCart(_id) {
-
-    const url = API_URL + "/carts/" + cartId + "/product/" + _id;
+    const PORT = 8080;
+    let cartId = localStorage.getItem("3").toString();
+    let cId = cartId ? cartId._id : null;
+    const API_URL1 = `http://localhost:${PORT}/api`;
+    const url = `${API_URL1}/carts/${cId}/product/${_id}`;
     const data = {};
     const options = {
         method: "POST",
@@ -17,18 +16,16 @@ function postToCart(_id) {
     fetch(url, options)
     .then((response) => response.json())
     .then((res) => {
-        console.log(res);
-        alert("added");
+        res.alert("added");
     })
     .catch((error) => {
-        console.error(error);
         alert(JSON.stringify(error));
     });
-}
+
 
 if (!cartId) {
     alert("no id");
-    const url = API_URL + "/carts";
+    const url = API_URL1 + "/carts";
     const data = {};
     const options = {
         method: "POST",
@@ -41,14 +38,12 @@ if (!cartId) {
     .then((response) => response.json())
     .then((data) => {
         console.log("Response:", data);
-        alert(JSON.stringify(localStorage.setItem("carritoid", data._id)));
+        alert(JSON.stringify(localStorage.setItem("3", data)));
         alert(JSON.stringify(data));
-        alert(JSON.parse(localStorage.getItem("carritoid")))
     })
     .catch((error) => {
-        console.error("Error:", error);
-        alert(JSON.stringify(error));
+alert(JSON.stringify(error));
     });
 }
 
-
+}

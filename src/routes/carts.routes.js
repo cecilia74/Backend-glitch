@@ -30,13 +30,20 @@ cartRouter.get("/:cid", async (req, res) => {
     try {
         const cart = req.params.cid;
         const get = await CartServise.getOne(cart);
-        if (cart) {
+
+        if (!get) {
+            throw new Error("Cart not found.");
+        }
+        const findOne = findOne.map((item) => {
+            return {_id:item.get.toString()}
+        })
+
             res.status(200).send({
                 status: "SUCCESS",
                 msg: "Cart found",
-                data: get,
+                data: findOne,
             })
-        }
+        
     } catch (err) {
         res.status(500).send({
             status: "ERROR",

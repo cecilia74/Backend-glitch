@@ -8,24 +8,24 @@ const priceProd = document.getElementById("priceProd");
 const codeProd = document.getElementById("codeProd");
 const stockProd = document.getElementById("stockProd");
 const url = document.getElementById("urlInput");
-
+const addToCart = document.getElementById("addToCart");
 const deleteProduct = document.getElementById("deleteProduct");
 const id = document.getElementById("productId");
 
 
-addProduct.addEventListener("submit", (e) => {
-    e.preventDefault();
-    socket.emit("new-product", {title: titleProd.value, description: descProd.value, price: parseInt(priceProd.value), thumbnails: url.value, code: codeProd.value, stock: parseInt(stockProd.value)});
-    addProduct.reset();
-        console.log(addProduct)
-});
+// addProduct.addEventListener("submit", (e) => {
+//     e.preventDefault();
+//     socket.emit("new-product", {title: titleProd.value, description: descProd.value, price: parseInt(priceProd.value), thumbnails: url.value, code: codeProd.value, stock: parseInt(stockProd.value)});
+//     addProduct.reset();
+//         console.log(addProduct)
+// });
 
-deleteProduct.addEventListener("submit", (e) => {
-    e.preventDefault();
-    socket.emit("delete-product", parseInt(productId.value));
-    deleteProduct.reset();
+// deleteProduct.addEventListener("submit", (e) => {
+//     e.preventDefault();
+//     socket.emit("delete-product", parseInt(productId.value));
+//     deleteProduct.reset();
 
-});
+// });
 
 
 addToCart.addEventListener("submit",(e) => {

@@ -1,10 +1,4 @@
-{{!-- <script>const getId = localStorage.getItem("carrito-id");
-    if (!getId) {
-        alert("no hay");
-    } else {
-        alert(getId)
-    }
-</script> --}}
+
 <h1>Products</h1>
 
 <div id="dynamic-list" class="row">
@@ -22,7 +16,7 @@
                 <p class="card-text">Category: {{this.category}}</p>
                 <p class="card-text">Status: {{this.status}}</p>
             </div>
-        </div><button onclick="postToCart('{{this._id}}')">add to cart</button>
+        </div><button class='btn btn-success mb-3 addToCart' id='addToCart' data-productid='{{_id}}' onclick="postToCart('{{this._id}}')">add to cart</button>
     </div>
 </div>
 {{/each}}

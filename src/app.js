@@ -9,7 +9,6 @@ import { home } from './routes/home.routes.js';
 import { productsRouter } from './routes/products.routes.js';
 import { realtime } from "./routes/realtimeproducts.routes.js";
 import { usersRouter } from './routes/users.routes.js';
-import { viewsRouter } from './routes/viewsProducts.routes.js';
 import { connectMongo } from './utils/dbConnecton.js';
 import { connectSocketServer } from "./utils/socketServer.js";
 
@@ -34,7 +33,6 @@ app.use("/api/carts", cartRouter)
 // DEVOLVER HTML
 
 app.use("/", home);
-app.use("/", viewsRouter);
 
 app.use("/realtimeproducts", realtime)
 
